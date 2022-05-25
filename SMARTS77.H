@@ -19,6 +19,8 @@
 #define userInt 0x60
 #define MaxTask 15
 #define MaxStack 512
+#define MaxQueue 100
+
 enum taskStatus
 {
 	READY,
@@ -29,6 +31,37 @@ enum taskStatus
 };
 
 /**********    Classes    **********/
+class PriorityQueue
+{
+private:
+	int idx;
+	int pqVal[MaxQueue];
+	int pqPriority[MaxQueue];
+	int peek();
+
+public:
+	PriorityQueue();
+	int isEmpty();
+	int isFull();
+	void enqueue(int data, int priority);
+	int dequeue();
+	void printQueue();
+};
+
+class Mutex
+{
+private:
+	int count;			 // 1 is available, 0 is unavailable
+	PriorityQueue queue; // queue of tasks waiting for access
+	int owner;			 // task number of the owner
+	int level;			 // level is the number of times the mutex has been acquired by the owner
+
+public:
+	Mutex();
+	void acquire();
+	void release();
+};
+
 class Event
 {
 private:
@@ -74,7 +107,7 @@ public:
 	void incrPriority();
 	void setOriginalPriority();
 };
-//                           Main class
+// Main class
 class Parallelism
 {
 private:
