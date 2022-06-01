@@ -9,20 +9,25 @@ Mutex::Mutex()
 
 void Mutex::acquire()
 {
+    SMARTS.contextSwitchOff();
     int current = SMARTS.getCurrentTask();
     if (count == 1 || owner == current)
         count = 0;
     else
     {
         queue.enqueue(current);
+        SMARTS.contextSwitchOn();
         SMARTS.suspended();
+        SMARTS.contextSwitchOff();
     }
     owner = current;
     level++;
+    SMARTS.contextSwitchOn();
 }
 
 void Mutex::release()
 {
+    SMARTS.contextSwitchOff();
     int current = SMARTS.getCurrentTask();
 
     if (owner == current)
@@ -41,4 +46,5 @@ void Mutex::release()
                 count = 1;
         }
     }
+    SMARTS.contextSwitchOn();
 }
