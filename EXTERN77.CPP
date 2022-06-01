@@ -28,13 +28,14 @@ void far interrupt timerInterruptHandler(...)
 		asm int userInt;
 		SMARTS.handleTimers();
 	}
-	else
-		SMARTS.resetProgInt(); // else it is a software "prog interrupt". reset this flag
+	// else
+	// 	SMARTS.resetProgInt(); // else it is a software "prog interrupt". reset this flag
 
 	// if the 'context switch' flag=true, save the current task variables
 	// and call the 'scheduler'
-	if (SMARTS.getContextSwitch()) // save stack addr of interrupted task in current stack
+	if (SMARTS.getProgInt() || SMARTS.getContextSwitch()) // save stack addr of interrupted task in current stack
 	{
+		SMARTS.resetProgInt(); 
 		SMARTS.setCurrentStack(StackSegAct, StackPtrAct);
 		SMARTS.restoreSchedStack(); // prepare activation of the task "scheduler"
 		SMARTS.getSchedStack(StackSegAct, StackPtrAct);

@@ -30,7 +30,6 @@ Parallelism::Parallelism()
 	totalTasks = 0;
 	deadlock = false;
 	timeOut = false;
-	contextSwitchFlag = true;
 	endOfTimeSlice = true;
 }
 
@@ -171,23 +170,23 @@ int Parallelism::contextSwitchOn()
 	if (endOfTimeSlice) // is current time slice finished ?
 	{
 		endOfTimeSlice = false;
-		contextSwitchFlag = true;
+		context[currentTask].contextSwitchFlag = true;
 		callScheduler(); // return control to the scheduler
 		return 1;
 	}
-	contextSwitchFlag = true;
+	context[currentTask].contextSwitchFlag = true;
 	return 0;
 }
 
 void Parallelism::contextSwitchOff()
 // Disable context switch
 {
-	contextSwitchFlag = false;
+	context[currentTask].contextSwitchFlag = false;
 }
 
 int Parallelism::getContextSwitch()
 {
-	return contextSwitchFlag;
+	return context[currentTask].contextSwitchFlag;
 }
 
 void Parallelism::setProgInt()
@@ -428,6 +427,7 @@ Task::Task()
 	status = NOT_ACTIVE;
 	sleepCount = 0;
 	currentPriority = priority = 0;
+	contextSwitchFlag = true;
 }
 //-----------------------------------------------------
 void Task::declare(void far *code, void far *userTaskEnd, char name, int periodTime, int numberPeriods)
@@ -447,6 +447,7 @@ void Task::declare(void far *code, void far *userTaskEnd, char name, int periodT
 	this->leftPeriodTime = periodTime;
 	this->userCode = code;
 	this->currentPriority = this->priority = periodTime;
+	this->contextSwitchFlag = true;
 	status = READY;
 }
 //-----------------------------------------------------
@@ -480,5 +481,123 @@ void Task::sleepDecr()
 			--sleepCount;
 		if (!sleepCount)
 			status = READY;
+	}
+}
+
+Mutex::Mutex()
+{
+	count = 1;
+	owner = -1;
+	level = 0;
+}
+
+void Mutex::acquire()
+{
+	SMARTS.contextSwitchOff();
+	int current = SMARTS.getCurrentTask();
+	if (count == 1 || owner == current)
+		count = 0;
+	else
+	{
+		queue.enqueue(current, SMARTS.getCurrentPriority());
+		SMARTS.suspended();
+	}
+	owner = current;
+	level++;
+	SMARTS.contextSwitchOn();
+}
+
+void Mutex::release()
+{
+	SMARTS.contextSwitchOff();
+	int current = SMARTS.getCurrentTask();
+
+	if (owner == current)
+	{
+		if (--level)
+			return;
+		else
+		{
+			owner = -1;
+			if (!queue.isEmpty())
+			{
+				int nextTask = queue.dequeue();
+				SMARTS.resume(nextTask);
+			}
+			else
+				count = 1;
+		}
+	}
+	SMARTS.contextSwitchOn();
+}
+
+PriorityQueue::PriorityQueue()
+{
+	idx = -1;
+}
+
+int PriorityQueue::isEmpty()
+{
+	return idx == -1;
+}
+
+int PriorityQueue::isFull()
+{
+	return idx == MaxQueue - 1;
+}
+
+void PriorityQueue::enqueue(int data, int priority)
+{
+	if (!isFull())
+	{
+		idx++;
+
+		pqVal[idx] = data;
+		pqPriority[idx] = priority;
+	}
+}
+
+int PriorityQueue::peek()
+{
+	int maxPriority = MAXINT;
+	int indexPos = -1;
+
+	for (int i = 0; i <= idx; i++)
+	{
+		if (maxPriority > pqPriority[i])
+		{
+			maxPriority = pqPriority[i];
+			indexPos = i;
+		}
+	}
+
+	return indexPos;
+}
+
+int PriorityQueue::dequeue()
+{
+	int maxPriority = -1;
+	if (!isEmpty())
+	{
+		int indexPos = peek();
+		maxPriority = pqVal[indexPos];
+
+		for (int i = indexPos; i < idx; i++)
+		{
+			pqVal[i] = pqVal[i + 1];
+			pqPriority[i] = pqPriority[i + 1];
+		}
+
+		idx--;
+	}
+
+	return maxPriority;
+}
+
+void PriorityQueue::printQueue()
+{
+	for (int i = 0; i <= idx; i++)
+	{
+		printf("(%d, %d)\n", pqVal[i], pqPriority[i]);
 	}
 }

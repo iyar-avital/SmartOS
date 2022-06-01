@@ -99,6 +99,7 @@ public:
 	int originalPeriodTime;		  // the period time
 	int leftPeriodTime;			  // the left time out of current period
 	int leftNumPeriods;			  // the left number of periods
+	int contextSwitchFlag;		  // enables/disables context switch
 	void far *userCode;			  // the pointer to the function
 	Task();
 	void declare(void far *code, void far *taskEnd, char name, int periodTime, int numberPeriods);
@@ -119,7 +120,6 @@ private:
 	int deadlock;				  // deadlock flag
 	int timeOut;				  // time out flag
 	int progInt;				  // 'program interrupt' flag
-	int contextSwitchFlag;		  // enables/disables context switch
 	int endOfTimeSlice;			  // indicates that has to be a context switch as soon as possible
 	// a pointer to the new timer interrupt handler
 	void interrupt (*timerInterruptHandler)(...);

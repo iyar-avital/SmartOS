@@ -6,63 +6,61 @@
 /* APP77.CPP, an application to demonstrate SMARTS77  functioning   */
 /********************************************************************/
 #include "smarts77.h"
-// Mutex ioMutex;
+Mutex ioMutex;
 
-// user Functions
+// user Functionss
 void a()
 {
-	// ioMutex.acquire();
-	SMARTS.contextSwitchOff();
+	ioMutex.acquire();
 	cout << "\n *************   A Start    *********************";
-	// ioMutex.release();
-	SMARTS.contextSwitchOn();
+	ioMutex.release();
 	for (int j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
 			;
-		SMARTS.contextSwitchOff();
+		ioMutex.acquire();
 		cout << "A";
-		SMARTS.contextSwitchOn();
+		ioMutex.release();
 	}
-	SMARTS.contextSwitchOff();
+	ioMutex.acquire();
 	cout << "\n *************   A Finish   *********************";
-	SMARTS.contextSwitchOn();
+	ioMutex.release();
 }
 
 void b()
 {
-	SMARTS.contextSwitchOff();
+	ioMutex.acquire();
 	cout << "\n *************   B Start    *********************";
-	SMARTS.contextSwitchOn();
+	ioMutex.release();
 	for (int j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
 			;
-		SMARTS.contextSwitchOff();
+		ioMutex.acquire();
 		cout << "B";
-		SMARTS.contextSwitchOn();
+		ioMutex.release();
 	}
-	SMARTS.contextSwitchOff();
+	ioMutex.acquire();
 	cout << "\n *************   B Finish   *********************";
-	SMARTS.contextSwitchOn();
+	ioMutex.release();
 }
 
 void c()
 {
-	SMARTS.contextSwitchOff();
+	ioMutex.acquire();
 	cout << "\n *************   C Start    *********************";
-	SMARTS.contextSwitchOn();
+	ioMutex.release();
 	for (int j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
 			;
-		SMARTS.contextSwitchOff();
+		ioMutex.acquire();
 		cout << "C";
-		SMARTS.contextSwitchOn();
+		ioMutex.release();
 	}
-	SMARTS.contextSwitchOff();
+	ioMutex.acquire();
 	cout << "\n *************   C Finish   *********************";
-	SMARTS.contextSwitchOn();
+	ioMutex.release();
 }
 
 void main()
