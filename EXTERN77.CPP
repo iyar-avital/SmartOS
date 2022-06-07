@@ -33,6 +33,8 @@ void far interrupt timerInterruptHandler(...)
 
 	// if the 'context switch' flag=true, save the current task variables
 	// and call the 'scheduler'
+	
+	// If its timer interrupt (hardware source), checks context switch flag
 	if (SMARTS.getProgInt() || SMARTS.getContextSwitch()) // save stack addr of interrupted task in current stack
 	{
 		SMARTS.resetProgInt(); 
