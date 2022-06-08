@@ -502,6 +502,7 @@ void Task::sleepDecr()
 
 Mutex::Mutex(int pi)
 {
+	cprintf("%d\n", pi);
 	SMARTS.setPriorityInheritanceFlag(pi);
 	count = 1;
 	owner = -1;
@@ -519,7 +520,7 @@ void Mutex::acquire()
 		if (SMARTS.getPriorityInheritanceFlag())
 		{
 			int currentTaskCurrentPriority = SMARTS.getCurrentPriority(current);
-			if (SMARTS.getCurrentPriority(owner) < currentTaskCurrentPriority)
+			if (SMARTS.getCurrentPriority(owner) > currentTaskCurrentPriority)
 				SMARTS.setCurrentPriority(owner, currentTaskCurrentPriority);
 		}
 		queue.enqueue(current, SMARTS.getCurrentPriority(current));
@@ -541,17 +542,17 @@ void Mutex::release()
 			return;
 		else
 		{
-			owner = -1;
 			if (!queue.isEmpty())
 			{
 				if (SMARTS.getPriorityInheritanceFlag())
-					SMARTS.setCurrentPriority(owner, SMARTS.getPriority(owner));
+					SMARTS.setOriginalPriority(owner);
 
 				int nextTask = queue.dequeue();
 				SMARTS.resume(nextTask);
 			}
 			else
 				count = 1;
+			owner = -1;
 		}
 	}
 	SMARTS.contextSwitchOn();

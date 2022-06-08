@@ -6,14 +6,18 @@
 /* APP77.CPP, an application to demonstrate SMARTS77  functioning   */
 /********************************************************************/
 #include "smarts77.h"
-Mutex ioMutex, xMutex;
-Event evAtoC, evBtoC;
+Mutex ioMutex, xMutex(1);
+Event evC;
+
+void printIntoFile(char *text);
 // user Functionss
 void a()
 {
 	ioMutex.acquire();
 	cout << "\n *************   A Start    *********************";
 	ioMutex.release();
+
+	printIntoFile("A start section 1/3");
 	for (int j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
@@ -22,10 +26,14 @@ void a()
 		cout << "A";
 		ioMutex.release();
 	}
+	printIntoFile("A finish section 1/3");
 
+	printIntoFile("A wait for event");
 	char c;
-	evAtoC.wait(c);
+	evC.wait(c);
+	printIntoFile("A wake up from waiting by event");
 
+	printIntoFile("A start section 2/3");
 	for (j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
@@ -34,9 +42,13 @@ void a()
 		cout << "A";
 		ioMutex.release();
 	}
+	printIntoFile("A finish section 2/3");
 
+	printIntoFile("A acquire xMutex");
 	xMutex.acquire();
+	printIntoFile("A get xMutex");
 
+	printIntoFile("A start section 3/3");
 	for (j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
@@ -45,8 +57,11 @@ void a()
 		cout << "A";
 		ioMutex.release();
 	}
+	printIntoFile("A finish section 3/3");
 
+	printIntoFile("A release xMutex");
 	xMutex.release();
+
 	ioMutex.acquire();
 	cout << "\n *************   A Finish   *********************";
 	ioMutex.release();
@@ -57,6 +72,8 @@ void b()
 	ioMutex.acquire();
 	cout << "\n *************   B Start    *********************";
 	ioMutex.release();
+
+	printIntoFile("B start section 1/2");
 	for (int j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
@@ -65,10 +82,14 @@ void b()
 		cout << "B";
 		ioMutex.release();
 	}
+	printIntoFile("B finish section 1/2");
 
+	printIntoFile("B wait for event");
 	char c;
-	evBtoC.wait(c);
+	evC.wait(c);
+	printIntoFile("B wake up from waiting by event");
 
+	printIntoFile("B start section 2/2");
 	for (j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
@@ -77,6 +98,7 @@ void b()
 		cout << "B";
 		ioMutex.release();
 	}
+	printIntoFile("B finish section 2/2");
 
 	ioMutex.acquire();
 	cout << "\n *************   B Finish   *********************";
@@ -88,6 +110,8 @@ void c()
 	ioMutex.acquire();
 	cout << "\n *************   C Start    *********************";
 	ioMutex.release();
+
+	printIntoFile("C start section 1/4");
 	for (int j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
@@ -96,8 +120,13 @@ void c()
 		cout << "C";
 		ioMutex.release();
 	}
+	printIntoFile("C finish section 1/4");
 
+	printIntoFile("C acquire xMutex");
 	xMutex.acquire();
+	printIntoFile("C get xMutex");
+
+	printIntoFile("C start section 2/4");
 	for (j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
@@ -106,10 +135,14 @@ void c()
 		cout << "C";
 		ioMutex.release();
 	}
+	printIntoFile("C finish section 2/4");
 
-	evAtoC.send('A', NULL, 0);
-	evBtoC.send('B', NULL, 0);
+	evC.send('A', NULL, 0);
+	printIntoFile("C send event to A");
+	evC.send('B', NULL, 0);
+	printIntoFile("C send event to B");
 
+	printIntoFile("C start section 3/4");
 	for (j = 0; j < 5; j++)
 	{
 		for (long i = 0; i < 200000; i++)
@@ -118,9 +151,12 @@ void c()
 		cout << "C";
 		ioMutex.release();
 	}
+	printIntoFile("C finish section 3/4");
 
+	printIntoFile("C release xMutex");
 	xMutex.release();
 
+	printIntoFile("C start section 4/4");
 	for (j = 0; j < 10; j++)
 	{
 		for (long i = 0; i < 200000; i++)
@@ -129,6 +165,7 @@ void c()
 		cout << "C";
 		ioMutex.release();
 	}
+	printIntoFile("C finish section 4/4");
 
 	ioMutex.acquire();
 	cout << "\n *************   C Finish   *********************";
@@ -146,6 +183,14 @@ void main()
 	// SMARTS.declareTask(e, 'E', 404, 3);
 	// SMARTS.declareTask(f, 'F', 405, 3);
 	SMARTS.runTheTasks();
+}
+
+void printIntoFile(char *text)
+{
+	FILE *file = fopen("test_3.txt", "a");
+	fprintf(file, text);
+	fprintf(file, "\n");
+	fclose(file);
 }
 
 // Iyar Avital 323075499
