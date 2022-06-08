@@ -57,7 +57,7 @@ private:
 	int level;			 // level is the number of times the mutex has been acquired by the owner
 
 public:
-	Mutex();
+	Mutex(int pi = 0);
 	void acquire();
 	void release();
 };
@@ -121,6 +121,7 @@ private:
 	int timeOut;				  // time out flag
 	int progInt;				  // 'program interrupt' flag
 	int endOfTimeSlice;			  // indicates that has to be a context switch as soon as possible
+	int priorityInheritanceFlag;  // 1 to inheritance and 0 for not
 	// a pointer to the new timer interrupt handler
 	void interrupt (*timerInterruptHandler)(...);
 	// a pointer to the original BIOS timer interrupt handler
@@ -158,12 +159,15 @@ public:
 	void resetProgInt();														   // clear the 'program interrupt' flag
 	int getProgInt();															   // get the 'program interrupt' flag status
 	void setEndOfTimeSlice();													   // set the 'end of time slice' flag
+	int getPriorityInheritanceFlag();
+	void setPriorityInheritanceFlag(int flag);
 	char getName(int taskNum);
 	char getCurrentName();
 	taskStatus getStatus(int taskNum);
 	taskStatus getCurrentStatus();
 	int getPriority(int taskNum);
-	int getCurrentPriority();
+	int getCurrentPriority(int taskNum);
+	void setCurrentPriority(int taskNum, int priority);
 	int getLeftPeriodTime(int taskNum);
 	int getCurrentLeftPeriodTime();
 	int getLeftPeriods(int taskNum);

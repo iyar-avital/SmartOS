@@ -6,8 +6,8 @@
 /* APP77.CPP, an application to demonstrate SMARTS77  functioning   */
 /********************************************************************/
 #include "smarts77.h"
-Mutex ioMutex;
-
+Mutex ioMutex, xMutex;
+Event evAtoC, evBtoC;
 // user Functionss
 void a()
 {
@@ -22,6 +22,31 @@ void a()
 		cout << "A";
 		ioMutex.release();
 	}
+
+	char c;
+	evAtoC.wait(c);
+
+	for (j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "A";
+		ioMutex.release();
+	}
+
+	xMutex.acquire();
+
+	for (j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "A";
+		ioMutex.release();
+	}
+
+	xMutex.release();
 	ioMutex.acquire();
 	cout << "\n *************   A Finish   *********************";
 	ioMutex.release();
@@ -40,6 +65,19 @@ void b()
 		cout << "B";
 		ioMutex.release();
 	}
+
+	char c;
+	evBtoC.wait(c);
+
+	for (j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "B";
+		ioMutex.release();
+	}
+
 	ioMutex.acquire();
 	cout << "\n *************   B Finish   *********************";
 	ioMutex.release();
@@ -58,6 +96,40 @@ void c()
 		cout << "C";
 		ioMutex.release();
 	}
+
+	xMutex.acquire();
+	for (j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "C";
+		ioMutex.release();
+	}
+
+	evAtoC.send('A', NULL, 0);
+	evBtoC.send('B', NULL, 0);
+
+	for (j = 0; j < 5; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "C";
+		ioMutex.release();
+	}
+
+	xMutex.release();
+
+	for (j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "C";
+		ioMutex.release();
+	}
+
 	ioMutex.acquire();
 	cout << "\n *************   C Finish   *********************";
 	ioMutex.release();
@@ -70,6 +142,9 @@ void main()
 	SMARTS.declareTask(a, 'A', 400, 3);
 	SMARTS.declareTask(b, 'B', 401, 3);
 	SMARTS.declareTask(c, 'C', 402, 3);
+	// SMARTS.declareTask(d, 'D', 403, 3);
+	// SMARTS.declareTask(e, 'E', 404, 3);
+	// SMARTS.declareTask(f, 'F', 405, 3);
 	SMARTS.runTheTasks();
 }
 
