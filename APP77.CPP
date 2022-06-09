@@ -6,8 +6,8 @@
 /* APP77.CPP, an application to demonstrate SMARTS77  functioning   */
 /********************************************************************/
 #include "smarts77.h"
-Mutex ioMutex, xMutex(1);
-Event evC;
+Mutex ioMutex, xMutex, yMutex;
+Event evCToAB, evFToDE;
 
 void printIntoFile(char *text);
 // user Functionss
@@ -30,7 +30,7 @@ void a()
 
 	printIntoFile("A wait for event");
 	char c;
-	evC.wait(c);
+	evCToAB.wait(c);
 	printIntoFile("A wake up from waiting by event");
 
 	printIntoFile("A start section 2/3");
@@ -86,7 +86,7 @@ void b()
 
 	printIntoFile("B wait for event");
 	char c;
-	evC.wait(c);
+	evCToAB.wait(c);
 	printIntoFile("B wake up from waiting by event");
 
 	printIntoFile("B start section 2/2");
@@ -137,9 +137,9 @@ void c()
 	}
 	printIntoFile("C finish section 2/4");
 
-	evC.send('A', NULL, 0);
+	evCToAB.send('A', NULL, 0);
 	printIntoFile("C send event to A");
-	evC.send('B', NULL, 0);
+	evCToAB.send('B', NULL, 0);
 	printIntoFile("C send event to B");
 
 	printIntoFile("C start section 3/4");
@@ -172,6 +172,167 @@ void c()
 	ioMutex.release();
 }
 
+void d()
+{
+	ioMutex.acquire();
+	cout << "\n *************   D Start    *********************";
+	ioMutex.release();
+
+	printIntoFile("D start section 1/3");
+	for (int j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "D";
+		ioMutex.release();
+	}
+	printIntoFile("D finish section 1/3");
+
+	printIntoFile("D wait for event");
+	char c;
+	evFToDE.wait(c);
+	printIntoFile("D wake up from waiting by event");
+
+	printIntoFile("D start section 2/3");
+	for (j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "D";
+		ioMutex.release();
+	}
+	printIntoFile("D finish section 2/3");
+
+	printIntoFile("D acquire yMutex");
+	yMutex.acquire();
+	printIntoFile("D get yMutex");
+
+	printIntoFile("D start section 3/3");
+	for (j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "D";
+		ioMutex.release();
+	}
+	printIntoFile("D finish section 3/3");
+
+	printIntoFile("D release xMutex");
+	yMutex.release();
+
+	ioMutex.acquire();
+	cout << "\n *************   D Finish   *********************";
+	ioMutex.release();
+}
+
+void e()
+{
+	ioMutex.acquire();
+	cout << "\n *************   E Start    *********************";
+	ioMutex.release();
+
+	printIntoFile("E start section 1/2");
+	for (int j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "E";
+		ioMutex.release();
+	}
+	printIntoFile("E finish section 1/2");
+
+	printIntoFile("E wait for event");
+	char c;
+	evFToDE.wait(c);
+	printIntoFile("E wake up from waiting Ey event");
+
+	printIntoFile("E start section 2/2");
+	for (j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "E";
+		ioMutex.release();
+	}
+	printIntoFile("E finish section 2/2");
+
+	ioMutex.acquire();
+	cout << "\n *************   E Finish   *********************";
+	ioMutex.release();
+}
+
+void f()
+{
+	ioMutex.acquire();
+	cout << "\n *************   F Start    *********************";
+	ioMutex.release();
+
+	printIntoFile("F start section 1/4");
+	for (int j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "F";
+		ioMutex.release();
+	}
+	printIntoFile("F finish section 1/4");
+
+	printIntoFile("F acquire yMutex");
+	yMutex.acquire();
+	printIntoFile("F get yMutex");
+
+	printIntoFile("F start section 2/4");
+	for (j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "F";
+		ioMutex.release();
+	}
+	printIntoFile("F finish section 2/4");
+
+	evFToDE.send('D', NULL, 0);
+	printIntoFile("F send event to D");
+	evFToDE.send('E', NULL, 0);
+	printIntoFile("F send event to E");
+
+	printIntoFile("F start section 3/4");
+	for (j = 0; j < 5; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "F";
+		ioMutex.release();
+	}
+	printIntoFile("F finish section 3/4");
+
+	printIntoFile("F release yMutex");
+	yMutex.release();
+
+	printIntoFile("F start setcion 4/4");
+	for (j = 0; j < 10; j++)
+	{
+		for (long i = 0; i < 200000; i++)
+			;
+		ioMutex.acquire();
+		cout << "F";
+		ioMutex.release();
+	}
+	printIntoFile("F finish seFtion 4/4");
+
+	ioMutex.acquire();
+	cout << "\n *************   F Finish   *********************";
+	ioMutex.release();
+}
+
 void main()
 {
 	clrscr();
@@ -179,15 +340,15 @@ void main()
 	SMARTS.declareTask(a, 'A', 400, 3);
 	SMARTS.declareTask(b, 'B', 401, 3);
 	SMARTS.declareTask(c, 'C', 402, 3);
-	// SMARTS.declareTask(d, 'D', 403, 3);
-	// SMARTS.declareTask(e, 'E', 404, 3);
-	// SMARTS.declareTask(f, 'F', 405, 3);
+	SMARTS.declareTask(d, 'D', 403, 3);
+	SMARTS.declareTask(e, 'E', 404, 3);
+	SMARTS.declareTask(f, 'F', 405, 3);
 	SMARTS.runTheTasks();
 }
 
 void printIntoFile(char *text)
 {
-	FILE *file = fopen("test_3.txt", "a");
+	FILE *file = fopen("TEST.txt", "a");
 	fprintf(file, text);
 	fprintf(file, "\n");
 	fclose(file);

@@ -546,9 +546,10 @@ void Mutex::release()
 			{
 				if (SMARTS.getPriorityInheritanceFlag())
 					SMARTS.setOriginalPriority(owner);
-
+				owner = -1;
 				int nextTask = queue.dequeue();
 				SMARTS.resume(nextTask);
+				SMARTS.callScheduler();
 			}
 			else
 				count = 1;

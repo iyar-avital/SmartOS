@@ -1,0 +1,180 @@
+A start section 1/3
+A finish section 1/3
+A wait for event
+B start section 1/2
+B finish section 1/2
+B wait for event
+C start section 1/4
+C finish section 1/4
+C acquire xMutex
+C get xMutex
+C start section 2/4
+C finish section 2/4
+C send event to A
+A wake up from waiting by event
+A start section 2/3
+A finish section 2/3
+A acquire xMutex
+C send event to B
+C start section 3/4
+C finish section 3/4
+C release xMutex
+A get xMutex
+A start section 3/3
+A finish section 3/3
+A release xMutex
+B wake up from waiting by event
+B start section 2/2
+B finish section 2/2
+C start section 4/4
+C finish section 4/4
+D start section 1/3
+D finish section 1/3
+D wait for event
+E start section 1/2
+E finish section 1/2
+E wait for event
+F start section 1/4
+F finish section 1/4
+F acquire yMutex
+F get yMutex
+F start section 2/4
+F finish section 2/4
+F send event to D
+D wake up from waiting by event
+D start section 2/3
+D finish section 2/3
+D acquire yMutex
+F send event to E
+F start section 3/4
+F finish section 3/4
+F release yMutex
+D get yMutex
+D start section 3/3
+D finish section 3/3
+D release xMutex
+E wake up from waiting Ey event
+E start section 2/2
+E finish section 2/2
+F start setcion 4/4
+F finish seFtion 4/4
+A start section 1/3
+A finish section 1/3
+A wait for event
+B start section 1/2
+B finish section 1/2
+B wait for event
+C start section 1/4
+C finish section 1/4
+C acquire xMutex
+C get xMutex
+C start section 2/4
+C finish section 2/4
+C send event to A
+A wake up from waiting by event
+A start section 2/3
+A finish section 2/3
+A acquire xMutex
+C send event to B
+C start section 3/4
+C finish section 3/4
+C release xMutex
+A get xMutex
+A start section 3/3
+A finish section 3/3
+A release xMutex
+B wake up from waiting by event
+B start section 2/2
+B finish section 2/2
+C start section 4/4
+C finish section 4/4
+D start section 1/3
+D finish section 1/3
+D wait for event
+E start section 1/2
+E finish section 1/2
+E wait for event
+F start section 1/4
+F finish section 1/4
+F acquire yMutex
+F get yMutex
+F start section 2/4
+F finish section 2/4
+F send event to D
+D wake up from waiting by event
+D start section 2/3
+D finish section 2/3
+D acquire yMutex
+F send event to E
+F start section 3/4
+F finish section 3/4
+F release yMutex
+D get yMutex
+D start section 3/3
+D finish section 3/3
+D release xMutex
+E wake up from waiting Ey event
+E start section 2/2
+E finish section 2/2
+F start setcion 4/4
+F finish seFtion 4/4
+A start section 1/3
+A finish section 1/3
+A wait for event
+B start section 1/2
+B finish section 1/2
+B wait for event
+C start section 1/4
+C finish section 1/4
+C acquire xMutex
+C get xMutex
+C start section 2/4
+C finish section 2/4
+C send event to A
+A wake up from waiting by event
+A start section 2/3
+A finish section 2/3
+A acquire xMutex
+C send event to B
+C start section 3/4
+C finish section 3/4
+C release xMutex
+A get xMutex
+A start section 3/3
+A finish section 3/3
+A release xMutex
+B wake up from waiting by event
+B start section 2/2
+B finish section 2/2
+C start section 4/4
+C finish section 4/4
+D start section 1/3
+D finish section 1/3
+D wait for event
+E start section 1/2
+E finish section 1/2
+E wait for event
+F start section 1/4
+F finish section 1/4
+F acquire yMutex
+F get yMutex
+F start section 2/4
+F finish section 2/4
+F send event to D
+D wake up from waiting by event
+D start section 2/3
+D finish section 2/3
+D acquire yMutex
+F send event to E
+F start section 3/4
+F finish section 3/4
+F release yMutex
+D get yMutex
+D start section 3/3
+D finish section 3/3
+D release xMutex
+E wake up from waiting Ey event
+E start section 2/2
+E finish section 2/2
+F start setcion 4/4
+F finish seFtion 4/4
