@@ -256,12 +256,22 @@ int Parallelism::getPriority(int taskNum)
 	return (taskNum <= totalTasks) ? context[taskNum].priority : UNDEFINED;
 }
 
-int Parallelism::getCurrentPriority(int taskNum)
+int Parallelism::getCurrentPriority()
+{
+	return context[currentTask].priority;
+}
+
+int Parallelism::getPriorityForNow(int taskNum)
 {
 	return (taskNum <= totalTasks) ? context[taskNum].currentPriority : UNDEFINED;
 }
 
-void Parallelism::setCurrentPriority(int taskNum, int priority)
+int Parallelism::getCurrentPriorityForNow()
+{
+	return context[taskNum].currentPriority;
+}
+
+void Parallelism::setPriorityForNow(int taskNum, int priority)
 {
 	if (taskNum <= totalTasks)
 		context[taskNum].currentPriority = priority;
@@ -524,11 +534,11 @@ void Mutex::acquire()
 	{
 		if (priorityInheritanceFlag)
 		{
-			int currentTaskCurrentPriority = SMARTS.getCurrentPriority(current);
-			if (SMARTS.getCurrentPriority(owner) > currentTaskCurrentPriority)
-				SMARTS.setCurrentPriority(owner, currentTaskCurrentPriority);
+			int currentTaskCurrentPriority = SMARTS.getCurrentPriorityForNow();
+			if (SMARTS.getPriorityForNow(owner) > currentTaskCurrentPriority)
+				SMARTS.setPriorityForNow(owner, currentTaskCurrentPriority);
 		}
-		queue.enqueue(current, SMARTS.getCurrentPriority(current));
+		queue.enqueue(current, currentTaskCurrentPriority);
 		SMARTS.suspended();
 	}
 	owner = current;
@@ -550,7 +560,7 @@ void Mutex::release()
 			if (!queue.isEmpty())
 			{
 				if (priorityInheritanceFlag)
-					SMARTS.setOriginalPriority(owner);
+					SMARTS.setCurrentOriginalPriority();
 				owner = -1;
 				int nextTask = queue.dequeue();
 				SMARTS.resume(nextTask);

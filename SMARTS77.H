@@ -169,8 +169,10 @@ public:
 	taskStatus getStatus(int taskNum);
 	taskStatus getCurrentStatus();
 	int getPriority(int taskNum);
-	int getCurrentPriority(int taskNum);
-	void setCurrentPriority(int taskNum, int priority);
+	int getCurrentPriority();
+	int getPriorityForNow(int taskNum);
+	int getCurrentPriorityForNow();
+	void setPriorityForNow(int taskNum, int priority);
 	int getLeftPeriodTime(int taskNum);
 	int getCurrentLeftPeriodTime();
 	int getLeftPeriods(int taskNum);
