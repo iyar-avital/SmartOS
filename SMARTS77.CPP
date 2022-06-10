@@ -62,6 +62,22 @@ int Parallelism::declareTask(void far *code, char name, int periodTime, int numb
 		return false;
 }
 
+void Parallelism::declareMutex(int mutex, int inheritanceFlag)
+{
+	if (mutex < NumOfMutexes)
+		mutexes[mutex] = Mutex(inheritanceFlag);
+}
+void Parallelism::acquire(int mutex)
+{
+	if (mutex < NumOfMutexes)
+		mutexes[mutex].acquire();
+}
+void Parallelism::release(int mutex)
+{
+	if (mutex < NumOfMutexes)
+		mutexes[mutex].release();
+}
+
 void Parallelism::runTheTasks()
 // Start running all tasks declared in SMARTS.
 {

@@ -1,3 +1,5 @@
+
+
 /********************************************************************/
 /* A Small Real Time System for the Real-Time laboratory            */
 /* built by: A.Teitelbaum on an idea of H.G.Mendelbaum              */
@@ -6,8 +8,9 @@
 /* APP77.CPP, an application to demonstrate SMARTS77  functioning   */
 /********************************************************************/
 #include "smarts77.h"
-Mutex ioMutex, xMutex(1), yMutex(1);
+Mutex ioMutex;
 Event evCToAB, evFToDE;
+int xMutex = 0, yMutex = 1;
 
 void printIntoFile(char *text);
 // user Functionss
@@ -45,7 +48,7 @@ void a()
 	printIntoFile("A finish section 2/3");
 
 	printIntoFile("A acquire xMutex");
-	xMutex.acquire();
+	SMARTS.acquire(xMutex);
 	printIntoFile("A get xMutex");
 
 	printIntoFile("A start section 3/3");
@@ -60,7 +63,7 @@ void a()
 	printIntoFile("A finish section 3/3");
 
 	printIntoFile("A release xMutex");
-	xMutex.release();
+	SMARTS.release(xMutex);
 
 	ioMutex.acquire();
 	cout << "\n *************   A Finish   *********************";
@@ -123,7 +126,7 @@ void c()
 	printIntoFile("C finish section 1/4");
 
 	printIntoFile("C acquire xMutex");
-	xMutex.acquire();
+	SMARTS.acquire(xMutex);
 	printIntoFile("C get xMutex");
 
 	printIntoFile("C start section 2/4");
@@ -156,7 +159,7 @@ void c()
 	printIntoFile("C finish section 3/4");
 
 	printIntoFile("C release xMutex");
-	xMutex.release();
+	SMARTS.release(xMutex);
 
 	printIntoFile("C start section 4/4");
 	for (j = 0; j < 10; j++)
@@ -208,7 +211,7 @@ void d()
 	printIntoFile("D finish section 2/3");
 
 	printIntoFile("D acquire yMutex");
-	yMutex.acquire();
+	SMARTS.acquire(yMutex);
 	printIntoFile("D get yMutex");
 
 	printIntoFile("D start section 3/3");
@@ -223,7 +226,7 @@ void d()
 	printIntoFile("D finish section 3/3");
 
 	printIntoFile("D release xMutex");
-	yMutex.release();
+	SMARTS.release(yMutex);
 
 	ioMutex.acquire();
 	cout << "\n *************   D Finish   *********************";
@@ -286,7 +289,7 @@ void f()
 	printIntoFile("F finish section 1/4");
 
 	printIntoFile("F acquire yMutex");
-	yMutex.acquire();
+	SMARTS.acquire(yMutex);
 	printIntoFile("F get yMutex");
 
 	printIntoFile("F start section 2/4");
@@ -319,7 +322,7 @@ void f()
 	printIntoFile("F finish section 3/4");
 
 	printIntoFile("F release yMutex");
-	yMutex.release();
+	SMARTS.release(yMutex);
 
 	printIntoFile("F start setcion 4/4");
 	for (j = 0; j < 10; j++)
@@ -347,6 +350,8 @@ void main()
 	SMARTS.declareTask(d, 'D', 403, 3);
 	SMARTS.declareTask(e, 'E', 404, 3);
 	SMARTS.declareTask(f, 'F', 405, 3);
+	SMARTS.declareMutex(xMutex, 1);
+	SMARTS.declareMutex(yMutex, 1);
 	SMARTS.runTheTasks();
 }
 
