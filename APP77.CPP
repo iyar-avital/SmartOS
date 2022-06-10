@@ -6,7 +6,7 @@
 /* APP77.CPP, an application to demonstrate SMARTS77  functioning   */
 /********************************************************************/
 #include "smarts77.h"
-Mutex ioMutex, xMutex, yMutex;
+Mutex ioMutex, xMutex(1), yMutex(1);
 Event evCToAB, evFToDE;
 
 void printIntoFile(char *text);
@@ -137,10 +137,12 @@ void c()
 	}
 	printIntoFile("C finish section 2/4");
 
+	printIntoFile("C start send event to A");
 	evCToAB.send('A', NULL, 0);
-	printIntoFile("C send event to A");
+	printIntoFile("C finish send event to A");
+	printIntoFile("C start send event to B");
 	evCToAB.send('B', NULL, 0);
-	printIntoFile("C send event to B");
+	printIntoFile("C finish send event to B");
 
 	printIntoFile("C start section 3/4");
 	for (j = 0; j < 5; j++)
@@ -298,10 +300,12 @@ void f()
 	}
 	printIntoFile("F finish section 2/4");
 
+	printIntoFile("F start send event to D");
 	evFToDE.send('D', NULL, 0);
-	printIntoFile("F send event to D");
+	printIntoFile("F finish send event to D");
+	printIntoFile("F start send event to E");
 	evFToDE.send('E', NULL, 0);
-	printIntoFile("F send event to E");
+	printIntoFile("F finish send event to E");
 
 	printIntoFile("F start section 3/4");
 	for (j = 0; j < 5; j++)

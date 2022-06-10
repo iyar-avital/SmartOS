@@ -10,12 +10,14 @@ C acquire xMutex
 C get xMutex
 C start section 2/4
 C finish section 2/4
-C send event to A
+C start send event to A
+C finish send event to A
+C start send event to B
 A wake up from waiting by event
 A start section 2/3
 A finish section 2/3
 A acquire xMutex
-C send event to B
+C finish send event to B
 C start section 3/4
 B wake up from waiting by event
 B start section 2/2
@@ -40,12 +42,14 @@ F acquire yMutex
 F get yMutex
 F start section 2/4
 F finish section 2/4
-F send event to D
+F start send event to D
+F finish send event to D
+F start send event to E
 D wake up from waiting by event
 D start section 2/3
 D finish section 2/3
 D acquire yMutex
-F send event to E
+F finish send event to E
 F start section 3/4
 E wake up from waiting Ey event
 E start section 2/2
@@ -70,16 +74,18 @@ C acquire xMutex
 C get xMutex
 C start section 2/4
 C finish section 2/4
-C send event to A
+C start send event to A
+C finish send event to A
+C start send event to B
 A wake up from waiting by event
 A start section 2/3
 A finish section 2/3
 A acquire xMutex
+C finish send event to B
+C start section 3/4
 B wake up from waiting by event
 B start section 2/2
 B finish section 2/2
-C send event to B
-C start section 3/4
 C finish section 3/4
 C release xMutex
 A get xMutex
@@ -100,12 +106,14 @@ F acquire yMutex
 F get yMutex
 F start section 2/4
 F finish section 2/4
-F send event to D
+F start send event to D
+F finish send event to D
+F start send event to E
 D wake up from waiting by event
 D start section 2/3
 D finish section 2/3
 D acquire yMutex
-F send event to E
+F finish send event to E
 F start section 3/4
 E wake up from waiting Ey event
 E start section 2/2
@@ -130,16 +138,18 @@ C acquire xMutex
 C get xMutex
 C start section 2/4
 C finish section 2/4
-C send event to A
+C start send event to A
+C finish send event to A
+C start send event to B
 A wake up from waiting by event
 A start section 2/3
 A finish section 2/3
 A acquire xMutex
+C finish send event to B
+C start section 3/4
 B wake up from waiting by event
 B start section 2/2
 B finish section 2/2
-C send event to B
-C start section 3/4
 C finish section 3/4
 C release xMutex
 A get xMutex
@@ -160,12 +170,14 @@ F acquire yMutex
 F get yMutex
 F start section 2/4
 F finish section 2/4
-F send event to D
+F start send event to D
+F finish send event to D
+F start send event to E
 D wake up from waiting by event
 D start section 2/3
 D finish section 2/3
 D acquire yMutex
-F send event to E
+F finish send event to E
 F start section 3/4
 E wake up from waiting Ey event
 E start section 2/2

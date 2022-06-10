@@ -51,13 +51,14 @@ public:
 class Mutex
 {
 private:
-	int count;			 // 1 is available, 0 is unavailable
-	PriorityQueue queue; // queue of tasks waiting for access
-	int owner;			 // task number of the owner
-	int level;			 // level is the number of times the mutex has been acquired by the owner
+	int count;					 // 1 is available, 0 is unavailable
+	PriorityQueue queue;		 // queue of tasks waiting for access
+	int owner;					 // task number of the owner
+	int level;					 // level is the number of times the mutex has been acquired by the owner
+	int priorityInheritanceFlag; // 1 to inheritance and 0 for not
 
 public:
-	Mutex(int pi = 0);
+	Mutex(int inheritanceFlag = 0);
 	void acquire();
 	void release();
 };
@@ -121,7 +122,6 @@ private:
 	int timeOut;				  // time out flag
 	int progInt;				  // 'program interrupt' flag
 	int endOfTimeSlice;			  // indicates that has to be a context switch as soon as possible
-	int priorityInheritanceFlag;  // 1 to inheritance and 0 for not
 	// a pointer to the new timer interrupt handler
 	void interrupt (*timerInterruptHandler)(...);
 	// a pointer to the original BIOS timer interrupt handler
@@ -142,25 +142,23 @@ public:
 						   void far *scheduler, void far *userTaskEnd,
 						   int far (*algorithm)());
 	int declareTask(void far *code, char name, int periodTime, int numberPeriods); // inserts a new task entry
-	void runTheTasks();															   // start running the tasks
-	void callScheduler();														   // return to the control to the scheduler
-	void restoreSchedStack();													   // restore the 'scheduler' stack
-	int getCurrentTask();														   // get the current running task entry number
-	void setCurrentTask(int taskNum);											   // set the next running task number
-	int getTotalTasks();														   // get total declared tasks
-	int getDeadlock();															   // get deadlock flag
-	void setDeadlock();															   // set deadlock flag
-	int getTimeOut();															   // get time out flag
-	void setTimeOut();															   // set time out flag
-	int contextSwitchOn();														   // enable context switch
-	void contextSwitchOff();													   // disable context switch
-	int getContextSwitch();														   // get 'context switch' flag status
-	void setProgInt();															   // set the 'program interrupt' flag
-	void resetProgInt();														   // clear the 'program interrupt' flag
-	int getProgInt();															   // get the 'program interrupt' flag status
-	void setEndOfTimeSlice();													   // set the 'end of time slice' flag
-	int getPriorityInheritanceFlag();
-	void setPriorityInheritanceFlag(int flag);
+	void runTheTasks();				  // start running the tasks
+	void callScheduler();			  // return to the control to the scheduler
+	void restoreSchedStack();		  // restore the 'scheduler' stack
+	int getCurrentTask();			  // get the current running task entry number
+	void setCurrentTask(int taskNum); // set the next running task number
+	int getTotalTasks();			  // get total declared tasks
+	int getDeadlock();				  // get deadlock flag
+	void setDeadlock();				  // set deadlock flag
+	int getTimeOut();				  // get time out flag
+	void setTimeOut();				  // set time out flag
+	int contextSwitchOn();			  // enable context switch
+	void contextSwitchOff();		  // disable context switch
+	int getContextSwitch();			  // get 'context switch' flag status
+	void setProgInt();				  // set the 'program interrupt' flag
+	void resetProgInt();			  // clear the 'program interrupt' flag
+	int getProgInt();				  // get the 'program interrupt' flag status
+	void setEndOfTimeSlice();		  // set the 'end of time slice' flag
 	char getName(int taskNum);
 	char getCurrentName();
 	taskStatus getStatus(int taskNum);

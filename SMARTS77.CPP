@@ -214,16 +214,6 @@ void Parallelism::setEndOfTimeSlice()
 	endOfTimeSlice = true;
 }
 
-int Parallelism::getPriorityInheritanceFlag()
-{
-	return priorityInheritanceFlag;
-}
-
-void Parallelism::setPriorityInheritanceFlag(int flag)
-{
-	priorityInheritanceFlag = flag;
-}
-
 char Parallelism::getName(int taskNum) // returns name found or ' ' if not
 {
 	return (taskNum <= totalTasks) ? context[taskNum].name : ' ';
@@ -500,13 +490,12 @@ void Task::sleepDecr()
 	}
 }
 
-Mutex::Mutex(int pi)
+Mutex::Mutex(int inheritanceFlag)
 {
-	cprintf("%d\n", pi);
-	SMARTS.setPriorityInheritanceFlag(pi);
 	count = 1;
 	owner = -1;
 	level = 0;
+	priorityInheritanceFlag = inheritanceFlag;
 }
 
 void Mutex::acquire()
@@ -517,7 +506,7 @@ void Mutex::acquire()
 		count = 0;
 	else
 	{
-		if (SMARTS.getPriorityInheritanceFlag())
+		if (priorityInheritanceFlag)
 		{
 			int currentTaskCurrentPriority = SMARTS.getCurrentPriority(current);
 			if (SMARTS.getCurrentPriority(owner) > currentTaskCurrentPriority)
@@ -544,7 +533,7 @@ void Mutex::release()
 		{
 			if (!queue.isEmpty())
 			{
-				if (SMARTS.getPriorityInheritanceFlag())
+				if (priorityInheritanceFlag)
 					SMARTS.setOriginalPriority(owner);
 				owner = -1;
 				int nextTask = queue.dequeue();
