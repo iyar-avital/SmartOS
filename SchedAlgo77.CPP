@@ -54,7 +54,7 @@ int RMS()
 	{
 		if (SMARTS.getStatus(i) == READY)
 		{
-			int priority = SMARTS.getCurrentPriority(i);
+			int priority = SMARTS.getPriorityForNow(i);
 			if (priority < maxPriority)
 			{
 				maxPriority = priority;

@@ -268,7 +268,7 @@ int Parallelism::getPriorityForNow(int taskNum)
 
 int Parallelism::getCurrentPriorityForNow()
 {
-	return context[taskNum].currentPriority;
+	return context[currentTask].currentPriority;
 }
 
 void Parallelism::setPriorityForNow(int taskNum, int priority)
@@ -532,9 +532,9 @@ void Mutex::acquire()
 		count = 0;
 	else
 	{
+		int currentTaskCurrentPriority = SMARTS.getCurrentPriorityForNow();
 		if (priorityInheritanceFlag)
 		{
-			int currentTaskCurrentPriority = SMARTS.getCurrentPriorityForNow();
 			if (SMARTS.getPriorityForNow(owner) > currentTaskCurrentPriority)
 				SMARTS.setPriorityForNow(owner, currentTaskCurrentPriority);
 		}
