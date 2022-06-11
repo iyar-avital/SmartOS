@@ -1,0 +1,318 @@
+A start section 1/3
+A finish section 1/3
+A wait for event
+F start section 1/2
+F finish section 1/2
+F wait for event
+B start section 1/5
+B finish section 1/5
+B wait for event
+G start section 1/2
+G finish section 1/2
+G wait for event
+C start section 1/5
+C finish section 1/5
+C wait for event
+H start section 1/2
+H finish section 1/2
+H wait for event
+D start section 1/5
+D finish section 1/5
+D wait for event
+E start section 1/3
+E finish section 1/3
+E acquire deMutex
+E get deMutex
+E start send event to D
+E finish send event to D
+E start section 2/3
+D wake up from waiting by event
+D acquire cdMutex
+D get cdMutex
+D start send event to C
+D finish send event to C
+D start send event to H
+C wake up from waiting by event
+C acquire bcMutex
+C get bcMutex
+C start send event to B
+C finish send event to B
+C start send event to G
+B wake up from waiting by event
+B acquire abMutex
+B get abMutex
+B start send event to A
+B finish send event to A
+B start send event to F
+A wake up from waiting by event
+A acquire abMutex
+B finish send event to F
+B start section 2/5
+F wake up from waiting by event
+F start section 2/2
+F finish section 2/2
+B finish section 2/5
+B acquire bcMutex
+C finish send event to G
+C start section 2/5
+G wake up from waiting by event
+G start section 2/2
+G finish section 2/2
+C finish section 2/5
+C acquire cdMutex
+D finish send event to H
+D start section 2/5
+H wake up from waiting by event
+H start section 2/2
+H finish section 2/2
+D finish section 2/5
+D acquire deMutex
+E finish section 2/3
+E release deMutex
+D get deMutex
+D start section 3/5
+D finish section 3/5
+D release deMutex
+D start section 4/5
+D finish section 4/5
+D release cdMutex
+C get cdMutex
+C start section 3/5
+C finish section 3/5
+C release cdMutex
+C start section 4/5
+C finish section 4/5
+C release bcMutex
+B get bcMutex
+B start section 3/5
+B finish section 3/5
+B release bcMutex
+B start section 4/5
+B finish section 4/5
+B release abMutex
+A get abMutex
+A start section 2/3
+A finish section 2/3
+A release abMutex
+A start section 3/3
+A finish section 3/3
+B start section 5/5
+B finish section 5/5
+C start section 5/5
+C finish section 5/5
+D start section 5/5
+D finish section 5/5
+E start section 3/3
+E finish section 3/3
+A start section 1/3
+A finish section 1/3
+A wait for event
+F start section 1/2
+F finish section 1/2
+F wait for event
+B start section 1/5
+B finish section 1/5
+B wait for event
+G start section 1/2
+G finish section 1/2
+G wait for event
+C start section 1/5
+C finish section 1/5
+C wait for event
+H start section 1/2
+H finish section 1/2
+H wait for event
+D start section 1/5
+D finish section 1/5
+D wait for event
+E start section 1/3
+E finish section 1/3
+E acquire deMutex
+E get deMutex
+E start send event to D
+E finish send event to D
+E start section 2/3
+D wake up from waiting by event
+D acquire cdMutex
+D get cdMutex
+D start send event to C
+D finish send event to C
+D start send event to H
+C wake up from waiting by event
+C acquire bcMutex
+C get bcMutex
+C start send event to B
+C finish send event to B
+C start send event to G
+B wake up from waiting by event
+B acquire abMutex
+B get abMutex
+B start send event to A
+B finish send event to A
+B start send event to F
+A wake up from waiting by event
+A acquire abMutex
+B finish send event to F
+B start section 2/5
+F wake up from waiting by event
+F start section 2/2
+F finish section 2/2
+B finish section 2/5
+B acquire bcMutex
+C finish send event to G
+C start section 2/5
+G wake up from waiting by event
+G start section 2/2
+G finish section 2/2
+C finish section 2/5
+C acquire cdMutex
+D finish send event to H
+D start section 2/5
+H wake up from waiting by event
+H start section 2/2
+H finish section 2/2
+D finish section 2/5
+D acquire deMutex
+E finish section 2/3
+E release deMutex
+D get deMutex
+D start section 3/5
+D finish section 3/5
+D release deMutex
+D start section 4/5
+D finish section 4/5
+D release cdMutex
+C get cdMutex
+C start section 3/5
+C finish section 3/5
+C release cdMutex
+C start section 4/5
+C finish section 4/5
+C release bcMutex
+B get bcMutex
+B start section 3/5
+B finish section 3/5
+B release bcMutex
+B start section 4/5
+B finish section 4/5
+B release abMutex
+A get abMutex
+A start section 2/3
+A finish section 2/3
+A release abMutex
+A start section 3/3
+A finish section 3/3
+B start section 5/5
+B finish section 5/5
+C start section 5/5
+C finish section 5/5
+D start section 5/5
+D finish section 5/5
+E start section 3/3
+E finish section 3/3
+A start section 1/3
+A finish section 1/3
+A wait for event
+F start section 1/2
+F finish section 1/2
+F wait for event
+B start section 1/5
+B finish section 1/5
+B wait for event
+G start section 1/2
+G finish section 1/2
+G wait for event
+C start section 1/5
+C finish section 1/5
+C wait for event
+H start section 1/2
+H finish section 1/2
+H wait for event
+D start section 1/5
+D finish section 1/5
+D wait for event
+E start section 1/3
+E finish section 1/3
+E acquire deMutex
+E get deMutex
+E start send event to D
+E finish send event to D
+E start section 2/3
+D wake up from waiting by event
+D acquire cdMutex
+D get cdMutex
+D start send event to C
+D finish send event to C
+D start send event to H
+C wake up from waiting by event
+C acquire bcMutex
+C get bcMutex
+C start send event to B
+C finish send event to B
+C start send event to G
+B wake up from waiting by event
+B acquire abMutex
+B get abMutex
+B start send event to A
+B finish send event to A
+B start send event to F
+A wake up from waiting by event
+A acquire abMutex
+B finish send event to F
+B start section 2/5
+F wake up from waiting by event
+F start section 2/2
+F finish section 2/2
+B finish section 2/5
+B acquire bcMutex
+C finish send event to G
+C start section 2/5
+G wake up from waiting by event
+G start section 2/2
+G finish section 2/2
+C finish section 2/5
+C acquire cdMutex
+D finish send event to H
+D start section 2/5
+H wake up from waiting by event
+H start section 2/2
+H finish section 2/2
+D finish section 2/5
+D acquire deMutex
+E finish section 2/3
+E release deMutex
+D get deMutex
+D start section 3/5
+D finish section 3/5
+D release deMutex
+D start section 4/5
+D finish section 4/5
+D release cdMutex
+C get cdMutex
+C start section 3/5
+C finish section 3/5
+C release cdMutex
+C start section 4/5
+C finish section 4/5
+C release bcMutex
+B get bcMutex
+B start section 3/5
+B finish section 3/5
+B release bcMutex
+B start section 4/5
+B finish section 4/5
+B release abMutex
+A get abMutex
+A start section 2/3
+A finish section 2/3
+A release abMutex
+A start section 3/3
+A finish section 3/3
+B start section 5/5
+B finish section 5/5
+C start section 5/5
+C finish section 5/5
+D start section 5/5
+D finish section 5/5
+E start section 3/3
+E finish section 3/3
