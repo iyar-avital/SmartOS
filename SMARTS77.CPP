@@ -62,6 +62,22 @@ int Parallelism::declareTask(void far *code, char name, int periodTime, int numb
 		return false;
 }
 
+void Parallelism::declareMutex(int mutex, int inheritanceFlag)
+{
+	if (mutex < NumOfMutexes)
+		mutexes[mutex] = Mutex(inheritanceFlag);
+}
+void Parallelism::acquire(int mutex)
+{
+	if (mutex < NumOfMutexes)
+		mutexes[mutex].acquire();
+}
+void Parallelism::release(int mutex)
+{
+	if (mutex < NumOfMutexes)
+		mutexes[mutex].release();
+}
+
 void Parallelism::runTheTasks()
 // Start running all tasks declared in SMARTS.
 {
@@ -305,15 +321,20 @@ int Parallelism::getCurrentPriority()
 	return context[currentTask].currentPriority;
 }
 
-void Parallelism::setPriority(int taskNum, int priority)
+void Parallelism::setRecursivePriority(int taskNum, int priority)
 {
 	if (taskNum <= totalTasks)
+	{
 		context[taskNum].currentPriority = priority;
-}
-
-void Parallelism::setCurrentPriority(int priority)
-{
-	context[currentTask].currentPriority = priority;
+		if (SMARTS.getStatus(taskNum) == SUSPENDED)
+		{
+			for (int mutex = 0; mutex < NumOfMutexes; mutex++)
+			{
+				if (mutexes[mutex].isInQueue(taskNum))
+					SMARTS.setRecursivePriority(mutexes[mutex].getOwner(), priority);
+			}
+		}
+	}
 }
 
 void Parallelism::setOriginalPriority(int taskNum)
@@ -514,6 +535,16 @@ Mutex::Mutex(int inheritanceFlag)
 	priorityInheritanceFlag = inheritanceFlag;
 }
 
+int Mutex::getOwner()
+{
+	return owner;
+}
+
+int Mutex::isInQueue(int taskNum)
+{
+	return queue.isExists(taskNum);
+}
+
 void Mutex::acquire()
 {
 	SMARTS.contextSwitchOff();
@@ -524,10 +555,8 @@ void Mutex::acquire()
 	{
 		int currentTaskCurrentPriority = SMARTS.getCurrentPriority();
 		if (priorityInheritanceFlag)
-		{
 			if (SMARTS.getPriority(owner) > currentTaskCurrentPriority)
-				SMARTS.setPriority(owner, currentTaskCurrentPriority);
-		}
+				SMARTS.setRecursivePriority(owner, currentTaskCurrentPriority);
 		queue.enqueue(current, currentTaskCurrentPriority);
 		SMARTS.suspended();
 	}
@@ -577,6 +606,20 @@ int PriorityQueue::isEmpty()
 int PriorityQueue::isFull()
 {
 	return idx == MaxQueue - 1;
+}
+
+int PriorityQueue::isExists(int data)
+{
+	if (isEmpty())
+		return 0;
+
+	for (int i = 0; i <= idx; i++)
+	{
+		if (pqVal[i] == data)
+			return 1;
+	}
+
+	return 0;
 }
 
 void PriorityQueue::enqueue(int data, int priority)
