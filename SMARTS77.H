@@ -115,7 +115,6 @@ class Parallelism
 {
 private:
 	Task context[MaxTask];		  // all tasks entries
-	Mutex mutexes[NumOfMutexes];  // all mutexes entries
 	Task contextSched;			  // scheduler entry
 	unsigned schedCopy[MaxStack]; // a copy of the scheduler stack
 	int totalTasks;				  // total declared tasks
@@ -144,9 +143,6 @@ public:
 						   void far *scheduler, void far *userTaskEnd,
 						   int far (*algorithm)());
 	int declareTask(void far *code, char name, int periodTime, int numberPeriods); // inserts a new task entry
-	void declareMutex(int mutex, int inheritanceFlag = 0);
-	void acquire(int mutex);
-	void release(int mutex);
 	void runTheTasks();				  // start running the tasks
 	void callScheduler();			  // return to the control to the scheduler
 	void restoreSchedStack();		  // restore the 'scheduler' stack
