@@ -251,32 +251,6 @@ taskStatus Parallelism::getCurrentStatus()
 	return context[currentTask].status;
 }
 
-int Parallelism::getPriority(int taskNum)
-{
-	return (taskNum <= totalTasks) ? context[taskNum].priority : UNDEFINED;
-}
-
-int Parallelism::getCurrentPriority()
-{
-	return context[currentTask].priority;
-}
-
-int Parallelism::getPriorityForNow(int taskNum)
-{
-	return (taskNum <= totalTasks) ? context[taskNum].currentPriority : UNDEFINED;
-}
-
-int Parallelism::getCurrentPriorityForNow()
-{
-	return context[currentTask].currentPriority;
-}
-
-void Parallelism::setPriorityForNow(int taskNum, int priority)
-{
-	if (taskNum <= totalTasks)
-		context[taskNum].currentPriority = priority;
-}
-
 int Parallelism::getLeftPeriodTime(int taskNum)
 {
 	return (taskNum <= totalTasks) ? context[taskNum].leftPeriodTime : UNDEFINED;
@@ -326,6 +300,38 @@ void Parallelism::incrPriority(int taskNum)
 	if (taskNum < totalTasks)
 		context[taskNum].incrPriority();
 }
+
+int Parallelism::getOriginalPriority(int taskNum)
+{
+	return (taskNum <= totalTasks) ? context[taskNum].priority : UNDEFINED;
+}
+
+int Parallelism::getCurrentOriginalPriority()
+{
+	return context[currentTask].priority;
+}
+
+int Parallelism::getPriority(int taskNum)
+{
+	return (taskNum <= totalTasks) ? context[taskNum].currentPriority : UNDEFINED;
+}
+
+int Parallelism::getCurrentPriority()
+{
+	return context[currentTask].currentPriority;
+}
+
+void Parallelism::setPriority(int taskNum, int priority)
+{
+	if (taskNum <= totalTasks)
+		context[taskNum].currentPriority = priority;
+}
+
+void Parallelism::setCurrentPriority(int priority)
+{
+	context[currentTask].currentPriority = priority;
+}
+
 void Parallelism::setOriginalPriority(int taskNum)
 {
 	if (taskNum < totalTasks)
@@ -532,11 +538,11 @@ void Mutex::acquire()
 		count = 0;
 	else
 	{
-		int currentTaskCurrentPriority = SMARTS.getCurrentPriorityForNow();
+		int currentTaskCurrentPriority = SMARTS.getCurrentPriority();
 		if (priorityInheritanceFlag)
 		{
-			if (SMARTS.getPriorityForNow(owner) > currentTaskCurrentPriority)
-				SMARTS.setPriorityForNow(owner, currentTaskCurrentPriority);
+			if (SMARTS.getPriority(owner) > currentTaskCurrentPriority)
+				SMARTS.setPriority(owner, currentTaskCurrentPriority);
 		}
 		queue.enqueue(current, currentTaskCurrentPriority);
 		SMARTS.suspended();

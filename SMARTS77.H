@@ -168,11 +168,6 @@ public:
 	char getCurrentName();
 	taskStatus getStatus(int taskNum);
 	taskStatus getCurrentStatus();
-	int getPriority(int taskNum);
-	int getCurrentPriority();
-	int getPriorityForNow(int taskNum);
-	int getCurrentPriorityForNow();
-	void setPriorityForNow(int taskNum, int priority);
 	int getLeftPeriodTime(int taskNum);
 	int getCurrentLeftPeriodTime();
 	int getLeftPeriods(int taskNum);
@@ -182,6 +177,12 @@ public:
 	void setCurrentNotActive();
 	void suspended();
 	void incrPriority(int taskNum);
+	int getOriginalPriority(int taskNum);
+	int getCurrentOriginalPriority();
+	int getPriority(int taskNum);
+	int getCurrentPriority();
+	void setPriority(int taskNum, int priority);
+	void setCurrentPriority(int priority);
 	void setOriginalPriority(int taskNum);
 	void setCurrentOriginalPriority();
 	Event *getExpectedEvent(int taskNum);
