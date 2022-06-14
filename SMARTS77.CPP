@@ -325,13 +325,16 @@ void Parallelism::setRecursivePriority(int taskNum, int priority)
 {
 	if (taskNum <= totalTasks)
 	{
-		context[taskNum].currentPriority = priority;
-		if (SMARTS.getStatus(taskNum) == SUSPENDED)
+		if (context[taskNum].currentPriority < priority)
 		{
-			for (int mutex = 0; mutex < NumOfMutexes; mutex++)
+			context[taskNum].currentPriority = priority;
+			if (SMARTS.getStatus(taskNum) == SUSPENDED)
 			{
-				if (mutexes[mutex].isInQueue(taskNum))
-					SMARTS.setRecursivePriority(mutexes[mutex].getOwner(), priority);
+				for (int mutex = 0; mutex < NumOfMutexes; mutex++)
+				{
+					if (mutexes[mutex].isInQueue(taskNum))
+						SMARTS.setRecursivePriority(mutexes[mutex].getOwner(), priority);
+				}
 			}
 		}
 	}
